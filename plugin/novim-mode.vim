@@ -1,7 +1,18 @@
 " Make sure insert mode is the default mode when opening/switching to files
+function! InsertMode()
+  if &buftype ==# 'nofile'
+     \|| !&modifiable
+     \|| &readonly
+     \|| bufname('%') =~# 'NERD_tree_'
+    exe "set noinsertmode"
+  else
+    exe "set insertmode"
+  endif
+endfunction
+
 augroup start_insertmode
   autocmd!
-  autocmd BufEnter * if &modifiable | startinsert | endif
+  autocmd BufEnter * call InsertMode()
 augroup END
 
 " Copy and paste stuff
@@ -24,6 +35,8 @@ vnoremap <S-Tab> <<Esc>gv
 
 " CTRL+q to exit pane/app
 inoremap <C-Q> <C-O>:q<CR>
+" Useful for exiting buffers like NERDTree that don't use insertmode
+nnoremap <C-Q> :q<CR>
 
 " Find
 inoremap <C-F> <C-O>/
@@ -33,6 +46,7 @@ inoremap <F3> <C-O>n
 inoremap <Esc> <C-O>:noh<CR>
 
 " Undo/redo
+" Doesn't use Ctrl+Z because that's already a significant *nix shortcut
 inoremap <silent> <C-U> <C-O>u
 inoremap <silent> <C-R> <C-O><C-R>
 
@@ -43,7 +57,7 @@ inoremap <silent> <C-S> <C-O>:update<CR>
 inoremap <silent> <C-K> <C-O>"_dd
 
 " CTRL+d duplicates current line
-" TODO: don't put it vim's clipboard, so CTRL+V works as expected
+" TODO: don't put it in vim's clipboard, so CTRL+V works as expected
 inoremap <silent> <C-D> <C-O>yy<C-O>p
 
 " Alt+/- moves the current line up and down
@@ -57,8 +71,7 @@ inoremap <silent> <Home> <C-O>^
 au BufNewFile,BufRead *.txt,*.md,*.markdown setlocal linebreak spell
 " Make arrow keys move through wrapped lines
 " TODO:
-"   * Scroll 1 wrapped soft line at a time rather an entire block of wrapped
+"   * Scroll window 1 wrapped soft line at a time rather an entire block of wrapped
 "     lines.
 au BufNewFile,BufRead *.txt,*.md,*.markdown inoremap <buffer> <Up> <C-O>gk
 au BufNewFile,BufRead *.txt,*.md,*.markdown inoremap <buffer> <Down> <C-O>gj
-
