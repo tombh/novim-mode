@@ -84,6 +84,7 @@ inoremap <silent> <Home> <C-O>^
 au BufNewFile,BufRead *.txt,*.md,*.markdown setlocal linebreak spell
 " Make arrow keys move through wrapped lines
 " TODO:
+"   * Make this feature optional.
 "   * Make End key move to end of current wrapped piece of line.
 "   * Scroll window 1 wrapped soft line at a time rather an entire block of wrapped
 "     lines.

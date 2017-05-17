@@ -36,3 +36,22 @@ Most keybindings should work as you might expect from, say Atom or Sublime Text;
   * `ALT+UP/DOWN`: Move current line up/down
   * `CTRL+Q`: Exit window/tab/split/quickfix/etc
 
+### Interoperability
+
+You may wish to adjust the order in which this plugin is loaded as it overrides mappings.
+
+When adding a new binding that needs Normal mode, you should use `<C-O>` before the targeted command, for example;
+```vim
+" Ensure CtrlP doesn't get overridden by autocomplete in insertmode
+inoremap <C-P> <C-O>:CtrlP<CR>
+```
+
+For easily navigating splits/windows/etc you will want to create your own mappings. Personally, I'm currently using [vim-tmux-navigator](https://github.com/christoomey/vim-tmux-navigator) with my own custom mappings to `CTRL+ARROW`.
+
+To access the Vim command prompt, I currently have this mapping;
+```vim
+inoremap <C-L> <C-O>:
+```
+It is of course useful for many things. For example search and replace.
+
+Perhaps these mappings could be added as configurable optionals one day.
