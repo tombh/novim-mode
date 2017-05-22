@@ -2,9 +2,9 @@
 
 _Work In Progress_
 
-Some, indeed many, may say this is counter-productive or even sacrilegious. But Vim is a lot more than just a keybinding paradigm; firstly it has one of the richest plugin ecosystems of any editor, but also it is a --if not *the* most-- ubiquitous text editor and has been battle tested for over 25 years. There are more reasons to use it than merely its famous shortcut vocabulary. This plugin is an attempt to expose everything else about Vim without the overhead of learning to use Normal mode The Right Way.
+Some, indeed many, may say this is counter-productive or even sacrilegious. But Vim is a lot more than just a keybinding paradigm; firstly it has one of the richest plugin ecosystems of any editor, but also it is a --if not *the* most-- ubiquitous text editor and has been battle tested for over 25 years. There are more reasons to use it than merely its famous shortcut vocabulary. This plugin is an attempt to expose everything else about Vim without the overhead of learning to use Normal Mode The Right Way. This is not a rebellion, it is merely a manifestation of the distinction between Vim the editor and Vim the keybinding paradigm. Please do not dismiss Normal Mode just because this plugin exists, give `vimtutor` a go: modal editing is popular for a reason.
 
-Vim itself already has support for something similar in its optional [`mswin.vim`](https://github.com/vim/vim/blob/master/runtime/mswin.vim) config file. However it still assumes the relevance of Normal mode and `SHIFT+INSERT` combinations. Whereas this plugin attempts to avoid Normal mode unless absolutely necessary, say for interacting with the NERDTree buffer.
+Vim itself already has support for something similar in its optional [`mswin.vim`](https://github.com/vim/vim/blob/master/runtime/mswin.vim) config file. However it still assumes the relevance of Normal Mode and `SHIFT+INSERT` combinations. Whereas this plugin attempts to avoid Normal Mode unless absolutely necessary, say for interacting with the NERDTree buffer, wherein Insert mode has no purpose.
 
 ## Installation
 
