@@ -1,3 +1,9 @@
+" novim_mode.vim - 'Conventional' editor keybindings plugin
+" Author:       tombh
+" Version:      0.1
+"
+" ============================================================================
+
 let s:save_cpo = &cpo
 set cpo&vim
 

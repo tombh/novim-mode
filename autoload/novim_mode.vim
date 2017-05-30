@@ -5,6 +5,7 @@ function! s:IsEditableBuffer()
      \|| !&modifiable
      \|| &readonly
      \|| bufname('%') =~# 'NERD_tree_'
+     \|| bufname('%') =~# 'fugitiveblame'
     return 0
   else
     return 1

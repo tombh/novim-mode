@@ -1,7 +1,13 @@
-addons:
-  apt:
-    packages:
-      - vim-gtk
+language: ruby
+
+rvm:
+  - 2.4.1
+
+before_install:
+  # The default Ubuntu vim-gtk doesn't seem to load the plugin :/
+  - sudo add-apt-repository ppa:laurent-boulard/vim -y
+  - sudo apt-get update -q
+  - sudo apt-get install vim-gtk -y
 
 before_script:
   - "export DISPLAY=:99.0"

@@ -1,4 +1,4 @@
-# No Vim Keybindings Mode
+#  No Vim Keybindings Mode [![Build Status](https://travis-ci.org/tombh/novim-mode.svg?branch=master)](https://travis-ci.org/tombh/novim-mode)
 
 Some, indeed many, may say this is counter-productive or even sacrilegious. But Vim is a lot more than just a keybinding paradigm; firstly it has one of the richest plugin ecosystems of any editor, but also it is a --if not *the* most-- ubiquitous text editor that's been battle tested for over 25 years. There are more reasons to use it than merely its famous shortcut vocabulary.
 
@@ -18,18 +18,11 @@ Use your favourite plugin manager, eg, for vim-plug;
 
 Most keybindings should work as you might expect from, say Atom or Sublime Text; `SHIFT+ARROW` to select and `CTRL+C/V` to copy/paste. But don't expect Vim to completely bend to your will, it is still useful to familiarise yourself with some of Vim's basic concepts. For instance you may on occasion find yourself stuck in a particular Vim mode, like when pasting text without 'Paste Mode' then inserted text can trigger random mappings. In such case `CTRL+Q` may not kill Vim and you'll need to find a way of getting to Normal Mode and typing `:q` then `<RETURN>`. Such is life with Vim, this plugin is highly unlikely to ever change that. (BTW conventional pasting is on by default, but to exit an errant 'Paste Mode' use `:set nopaste`.)
 
-If you are new to Vim, then perhaps the only remaining confusion after installing
-this plugin will be about where files go when you open new ones. This question
-will be answered by Vim's concept of 'buffers'. You may wish to install something
-like [vim-buftabline](https://github.com/ap/vim-buftabline) to give a familiar
-list of open files along the top of the editor.
+If you are new to Vim, then perhaps the only remaining confusion after installing this plugin will be about where files go when you open new ones. This question will be answered by Vim's concept of 'buffers'. You may wish to install something like [vim-buftabline](https://github.com/ap/vim-buftabline) to give a familiar list of open files along the top of the editor.
 
 ### Keybindings
 
-Many terminals default to intercepting `CTRL+S` to suspend output, if so you will
-need to disable this behaviour. Most terminals will also bind the `CTRL+Q` to undo
-the suspend, useful, but you will also need to unmap that, or change the mapping
-in this plugin for quitting Vim.
+Many terminals default to intercepting `CTRL+S` to suspend output, if so you will need to disable this behaviour. Most terminals will also bind the `CTRL+Q` to undo the suspend, useful, but you will also need to unmap that, or change the mapping in this plugin for quitting Vim.
 
 `CTRL`-based shortcuts are paired with uppercase letters here because Vim
 does not recognise the difference between cases when using `CTRL` combinations and
@@ -72,7 +65,7 @@ documenting in uppercase implies something of this distinction.
 #### Other text manipulation tricks
   * `CTRL+LEFT/RIGHT`: Move cursor per word (works in selection as well).
   * `CTRL+ALT+k`: Delete current line.
-  * `CTRL+ALT+k`: Duplicate current line.
+  * `CTRL+ALT+d`: Duplicate current line.
   * `CTRL+UP/DOWN`: Move current line or selected text up/down.
 
 ### Interoperability
@@ -89,7 +82,7 @@ inoremap ... custom mapping ...
 call novim_mode#StartNoVimMode()
 ```
 
-Shorcuts are also grouped roughly under the headings described above, so you may be able to disable
+Shortcuts are also grouped roughly under the headings described above, so you may be able to disable
 one of the following:
 ```vim
 let g:novim_mode_use_general_app_shortcuts = 1
