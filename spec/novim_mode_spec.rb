@@ -66,11 +66,26 @@ describe 'Basic editing' do
       select me
     EOF
 
-    # Conventional behaviour shouldn't need the <End>?
     type '<C-a>gone'
 
     after <<-EOF
       gone
+    EOF
+  end
+
+  specify 'paste over selection' do
+    before <<-EOF
+      cut me and paste over me
+    EOF
+
+    7.times { type '<S-Right>' }
+    type '<C-x>'
+    10.times { type '<Right>' }
+    7.times { type '<S-Right>' }
+    type '<C-v>'
+
+    after <<-EOF
+      and paste cut me
     EOF
   end
 end

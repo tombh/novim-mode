@@ -92,6 +92,7 @@ function! g:SetNoVimModeShortcuts()
 
     " ALT+; for command prompt
     inoremap <M-;> <C-O>:
+    nnoremap <M-;> :
 
     " <ALT+o> replaces native <C-O> for one-time normal mode commands.
     inoremap <M-o> <C-O>
@@ -134,6 +135,7 @@ function! g:SetNoVimModeShortcuts()
     set virtualedit=onemore
     " NB. All these use the named 'p' register.
     inoremap <C-V> <C-O>"pP
+    snoremap <C-V> <C-O>"pP
     snoremap <C-C> <C-O>"pyi
     inoremap <C-C> <C-O>"pY
     snoremap <C-X> <C-O>"pxi
