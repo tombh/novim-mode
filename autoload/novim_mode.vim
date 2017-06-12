@@ -4,8 +4,6 @@ function! s:IsEditableBuffer()
   if &buftype ==# 'nofile'
      \|| !&modifiable
      \|| &readonly
-     \|| bufname('%') =~# 'NERD_tree_'
-     \|| bufname('%') =~# 'fugitiveblame'
     return 0
   else
     return 1
@@ -46,7 +44,10 @@ function! s:InsertAndSelectionBehaviour()
   " Intelligently set/unset insertmode
   augroup start_insertmode
     autocmd!
-    autocmd BufEnter * call s:InsertMode()
+    " The timer here delays the call to check whether the current buffer
+    " is an editable one. Without the delay, the check is often too early
+    " to correctly get the value of `&buftype`, etc.
+    autocmd BufEnter * call timer_start(1, {->execute('call s:InsertMode()')})
   augroup END
 
   " Mostly changes the way selection works.
