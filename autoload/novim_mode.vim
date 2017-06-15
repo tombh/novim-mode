@@ -136,7 +136,7 @@ function! g:SetNoVimModeShortcuts()
     " NB. All these use the named 'p' register.
     inoremap <C-V> <C-O>"pP
     snoremap <C-V> <C-O>"pP
-    snoremap <C-C> <C-O>"pyi
+    snoremap <C-C> <C-O>"pygv
     inoremap <C-C> <C-O>"pY
     snoremap <C-X> <C-O>"pxi
     inoremap <C-X> <C-O>"pdd

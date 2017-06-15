@@ -53,8 +53,7 @@ describe 'Basic editing' do
       copy me
     EOF
 
-    # Conventional behaviour shouldn't need the <End> right?
-    type '<S-End><C-c><End><Space><C-v>'
+    type '<S-End><C-c><Right><C-v>'
 
     after <<-EOF
       copy me copy me
