@@ -107,7 +107,7 @@ Undoing
 
 Other text manipulation tricks
   * `CTRL+LEFT/RIGHT`: Move cursor per word (works in selection as well).
-  * `CTRL+ALT+k`: Delete current line.
+  * `CTRL+ALT+d`: Delete current line.
   * `CTRL+ALT+k`: Duplicate current line.
   * `CTRL+UP/DOWN`: Move current line or selected text up/down.
 
@@ -155,12 +155,9 @@ following: >
   * There seems to be a bug where only `SHIFT+TAB` and not `TAB` works for
     indenting during selection mode. Again this may be fixed by simulating
     selection mode with Visual mode in the future.
-  * When using `novim_mode_use_better_wrap_navigation`, then END key does not
-    go the end of a visual line, but to the end of the physically represented
-    line.
-  * Mapping `<CTRL+m>` internally means mapping `<RETURN>`. This is a
+  * Mapping `<CTRL+M>` internally means mapping `<RETURN>`. This is a
     throwback to Vim's days as a pure terminal application.
-  * `CTRL+BACKSPACE` internally represents <CTRL+H>, which can be annoying.
+  * `CTRL+BACKSPACE` internally represents `<CTRL+H>`, which can be annoying.
     Again this is a throwback to Vim's days as a pure terminal application.
 
 ==============================================================================

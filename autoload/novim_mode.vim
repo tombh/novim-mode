@@ -101,8 +101,18 @@ function! g:SetNoVimModeShortcuts()
 
   " General fixes to editor behaviour
   if g:novim_mode_use_editor_fixes == 1
-    " Fix HOME to go back to the first non-whitespace character of the line
-    inoremap <silent> <Home> <C-O>^
+    " All thee `g`s here make these also work for wrapped lines.
+
+    " Fix HOME to go back to the first non-whitespace character of the line.
+    inoremap <silent> <Home> <C-O>g^
+    " Native End would work anyway but it needs the `g` for wrapped lines
+    inoremap <silent> <End> <C-O>g$
+
+    " For selection behaviour
+    inoremap <silent> <S-Home> <S-Left><C-G><C-O>g^
+    snoremap <silent> <S-Home> <C-O>g^
+    inoremap <silent> <S-End> <S-Right><C-G><C-O>g$
+    snoremap <silent> <S-End> <C-O>g$
 
     " Tweaks PageUp behaviour to get cursor to first line on top page
     inoremap <silent> <PageUp> <C-O>:call novim_mode#PageUp()<CR>
@@ -224,11 +234,13 @@ function! s:SetWrappedTextNavigation()
 
   " Make arrow keys move through wrapped lines
   " TODO:
-  "   * Make END key move to end of current wrapped piece of line.
-  "   * Scroll window 1 wrapped soft line at a time rather an entire block of wrapped
+  "   * Scroll window 1 wrapped soft line at a time rather than entire block of wrapped
   "     lines.
   au BufNewFile,BufRead *.txt,*.md,*.markdown inoremap <buffer> <Up> <C-O>gk
   au BufNewFile,BufRead *.txt,*.md,*.markdown inoremap <buffer> <Down> <C-O>gj
+  " For selection behaviour
+  au BufNewFile,BufRead *.txt,*.md,*.markdown snoremap <buffer> <S-Up> <C-O>gk
+  au BufNewFile,BufRead *.txt,*.md,*.markdown snoremap <buffer> <S-Down> <C-O>gj
 endfunction
 
 " Try to intuitively and intelligently close things like buffers, splits,

@@ -19,3 +19,26 @@ Vimrunner::RSpec.configure do |config|
     vim
   end
 end
+
+TEST_FILE = 'test_file.txt'.freeze
+
+def write_file_content(string)
+  string = normalize_string_indent(string)
+  File.open(TEST_FILE, 'w') { |f| f.write(string) }
+  vim.edit TEST_FILE
+end
+
+def load_file_content
+  vim.write
+  IO.read(TEST_FILE).strip
+end
+
+def type(string)
+  string.scan(/<.*?>|./).each do |key|
+    if key =~ /<.*>/
+      vim.feedkeys "\\#{key}"
+    else
+      vim.feedkeys key
+    end
+  end
+end

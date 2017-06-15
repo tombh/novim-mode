@@ -2,78 +2,69 @@
 # of testing Vim.
 require 'spec_helper'
 
-TEST_FILE = 'test_file.txt'.freeze
-
-def write_file_content(string)
-  string = normalize_string_indent(string)
-  File.open(TEST_FILE, 'w') { |f| f.write(string) }
-  vim.edit TEST_FILE
-end
-
-def load_file_content
-  vim.write
-  IO.read(TEST_FILE).strip
-end
-
-def before(string)
-  options.each { |x| vim.command(x) } if options
+def initial(string)
+  @vim_options.each { |x| vim.command(x) } if @vim_options
   write_file_content(string)
 end
 
-def after(string)
+def final(string)
   expect(load_file_content).to eq normalize_string_indent(string)
 end
 
-def type(string)
-  string.scan(/<.*?>|./).each do |key|
-    if key =~ /<.*>/
-      vim.feedkeys "\\#{key}"
-    else
-      vim.feedkeys key
-    end
-  end
-end
-
 describe 'Basic editing' do
-  let(:options) {}
-
   specify 'writing simple text' do
-    before <<-EOF
+    initial <<-EOF
     EOF
 
     type 'hello world'
 
-    after <<-EOF
+    final <<-EOF
       hello world
     EOF
   end
 
-  specify 'copy and paste' do
-    before <<-EOF
-      copy me
+  specify '<Home> goes to first non-whitespace char' do
+    initial <<-EOF
+      justified
+         indented
     EOF
 
-    type '<S-End><C-c><Right><C-v>'
+    type '<Down><End><Home>!'
 
-    after <<-EOF
-      copy me copy me
+    final <<-EOF
+      justified
+         !indented
     EOF
   end
 
+  specify 'copy and paste' do
+    initial <<-EOF
+      copy me
+    EOF
+
+    type '<S-End><C-c><Esc><Space><C-v>'
+
+    final <<-EOF
+      copy me copy me
+    EOF
+  end
+end
+
+describe 'Selecting' do
   specify 'select all and replace' do
-    before <<-EOF
+    initial <<-EOF
       select me
     EOF
 
     type '<C-a>gone'
 
-    after <<-EOF
+    final <<-EOF
       gone
     EOF
   end
 
   specify 'paste over selection' do
-    before <<-EOF
+    initial <<-EOF
       cut me and paste over me
     EOF
 
@@ -83,15 +74,114 @@ describe 'Basic editing' do
     7.times { type '<S-Right>' }
     type '<C-v>'
 
-    after <<-EOF
+    final <<-EOF
       and paste cut me
+    EOF
+  end
+
+  specify 'selecting from middle of line to end' do
+    initial <<-EOF
+      a line of text
+    EOF
+
+    6.times { type '<Right>' }
+    type '<S-End>'
+    type '!'
+
+    final <<-EOF
+      a line!
+    EOF
+  end
+
+  specify 'selecting from middle of line to beginning' do
+    initial <<-EOF
+      a line of text
+    EOF
+
+    7.times { type '<Right>' }
+    type '<S-Home>'
+    type '!'
+
+    final <<-EOF
+      !of text
+    EOF
+  end
+end
+
+describe 'Wrapped text' do
+  before(:each) do
+    @vim_options = [
+      # A single buffer can't be resized, so create a split of the buffer
+      'vsplit',
+      'vertical resize 6'
+    ]
+  end
+
+  specify 'move up/down one wrapped line' do
+    initial <<-EOF
+      line line line line
+    EOF
+
+    type '<Down><Down>down '
+    type '<Up>up '
+
+    final <<-EOF
+      line line up down line line
+    EOF
+  end
+
+  specify 'select wrapped line below' do
+    initial <<-EOF
+      line1 line2 line3 line4
+    EOF
+
+    type '<Down><S-Down><S-Down>'
+    type '!'
+
+    final <<-EOF
+      line1 !line3 line4
+    EOF
+  end
+
+  specify 'select wrapped line above' do
+    initial <<-EOF
+      line1 line2 line3 line4
+    EOF
+
+    type '<Down><Down><S-Up><S-Up>'
+    type '!'
+
+    final <<-EOF
+      line1 !line3 line4
+    EOF
+  end
+
+  specify '<End> goes to end of wrapped line' do
+    initial <<-EOF
+      line line line line
+    EOF
+
+    type '<End>!'
+
+    final <<-EOF
+      line! line line line
+    EOF
+  end
+
+  specify '<Home> goes to beginning of wrapped line' do
+    initial <<-EOF
+      line line line line
+    EOF
+
+    type '<Down><Home>!'
+
+    final <<-EOF
+      line !line line line
     EOF
   end
 end
 
 describe 'Pane control' do
-  let(:options) {}
-
   specify 'moving to another pane' do
     # Open Quickfix window (auto focuses to it)
     type '<M-;>:copen<CR>'

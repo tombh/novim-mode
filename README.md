@@ -76,7 +76,7 @@ inoremap <C-P> <C-O>:CtrlP<CR>
 ```
 
 Overriding or disabling shortcuts in this plugin can be done in several ways. The simplest way is to use:
-```
+```vim
 let g:novim_mode_use_shortcuts = 0
 inoremap ... custom mapping ...
 call novim_mode#StartNoVimMode()
@@ -102,8 +102,7 @@ let g:novim_mode_use_better_wrap_navigation = 1
 Lastly you can unmap a mapping using commands such as `nunmap`, `iunmap`, `sunmap`, etc.
 
 ### Known issues
-  * There seems to be a bug where only `SHIFT+TAB` and not `TAB` works for indenting during selection mode. Again this may be fixed by simulating selection mode with Visual mode in the future.
-  * When using `novim_mode_use_better_wrap_navigation`, then END key does not go the end of a visual line, but to the end of the physically represented line.
-  * Mapping `<CTRL+m>` internally means mapping `<RETURN>`. This is a throwback to Vim's days as a pure terminal application.
-  * `CTRL+BACKSPACE` internally represents <CTRL+H>, which can be annoying. Again this is a throwback to Vim's days as a pure terminal application.
+  * There seems to be a bug where only `SHIFT+TAB` and not `TAB` works for indenting during selection mode.
+  * Mapping `<CTRL+M>` internally means mapping `<RETURN>`. This is a throwback to Vim's days as a pure terminal application.
+  * `CTRL+BACKSPACE` internally represents `<CTRL+H>`, which can be annoying. Again this is a throwback to Vim's days as a pure terminal application.
 
