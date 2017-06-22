@@ -38,7 +38,11 @@ endfunction
 call s:init_settings(s:settings)
 
 " Plugin entry point
-call novim_mode#StartNoVimMode()
+if has('timers')
+  call g:novim_mode#StartNoVimMode()
+else
+  echo 'Novim-mode will not work this version of Vim (no `timer` support).'
+endif
 
 let &cpo = s:save_cpo
 unlet s:save_cpo

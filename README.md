@@ -1,6 +1,6 @@
 #  No Vim Keybindings Mode [![Build Status](https://travis-ci.org/tombh/novim-mode.svg?branch=master)](https://travis-ci.org/tombh/novim-mode)
 
-Some, indeed many, may say this is counter-productive or even sacrilegious. But Vim is a lot more than just a keybinding paradigm; firstly it has one of the richest plugin ecosystems of any editor, but also it is a --if not *the* most-- ubiquitous text editor that's been battle tested for over 25 years. There are more reasons to use it than merely its famous shortcut vocabulary.
+Some, indeed many, may say this is counter-productive or even sacrilegious. But Vim is a lot more than just a keybinding paradigm; firstly it has one of the richest plugin ecosystems of any editor, but also it is a -if not *the* most- ubiquitous text editor that's been battle tested for over 25 years. There are more reasons to use it than merely its famous shortcut vocabulary.
 
 This plugin is an attempt to expose everything else about Vim without the overhead of cultivating Normal Mode fluency. This is not a rebellion, it is merely a manifestation of the distinction between Vim the editor and Vim the keybinding paradigm. Please do not dismiss Normal Mode just because this plugin exists, give `vimtutor` a try, modal editing is popular for a reason.
 
@@ -22,18 +22,26 @@ If you are new to Vim, then perhaps the only remaining confusion after installin
 
 ### Keybindings
 
-Many terminals default to intercepting `CTRL+S` to suspend output, if so you will need to disable this behaviour. Most terminals will also bind the `CTRL+Q` to undo the suspend, useful, but you will also need to unmap that, or change the mapping in this plugin for quitting Vim.
+#### Vim in the terminal
+Both Vim and Neovim can be used both as GUI apps and in the terminal. However, original Vim in the terminal has problems with many key combinations - essentially most combinations that are not a plain `CTRL+KEY`. To get around this you can use the [vim-fixkey](https://github.com/drmikehenry/vim-fixkey) plugin. It does have some caveats, which you can read about in its docs, but basically it just makes recording macros a little bit more tricky because of the timing between `Esc` combinations. `vim-fixkey` also doesn't enable `ALT+non-alphanumeric` combinations, but `novim-mode` usually has alphanumeric siblings which you can still use. However, if you are not particularly tied to Vim, you can use Neovim in the terminal which has much better support for key combinations and will work without the  need for `vim-fixkey`. Note that the GUI versions of both Vim and Neovim also don't have these key combination problems.
 
-`CTRL`-based shortcuts are paired with uppercase letters here because Vim
-does not recognise the difference between cases when using `CTRL` combinations and
-documenting in uppercase implies something of this distinction.
+Most terminal emulators (ie. `xterm`, `rxvt`, `PuTTY`, etc) default to intercepting `CTRL+S` to suspend output (`CTRL+Q` unsuspends if you're wondering), if so you will need to disable this behaviour to use `novim-mode`'s shortcuts for saving and quitting. Most often you simply need to add the following to your `~/.bashrc`, `~/.zshrc` or similar:
+
+```sh
+stty -ixon
+stty stop undef
+```
+
+However some GUI terminals also have their own settings for suspension. For instance Konsole, which can be unset by going to `Settings -> Configure Profile -> Choose current profile -> Edit Profile -> Advanced Tab` and disabling `Enable flow control using Ctrl+S and Ctrl+Q`
+
+One further common problem is that `tmux` can change key combination behaviour, most notably for `SHIFT+ARROW` combinations, to overcome this add `set-window-option -g xterm-keys` to your `~/.tmux.conf` config.
 
 #### General editor shortcuts
   * `CTRL+N`: Open a new file.
   * `CTRL+O`: Open an existing file.
   * `CTRL+S`: Saves the current file.
   * `CTRL+G`: Goto line.
-  * `ALT+;`: Vim command prompt.
+  * `ALT+;` or `ALT+c`: Vim's command prompt.
   * `ALT+o`: Replaces native `CTRL+O` to give one-off Normal Mode commands.
 
 #### Pane controls
@@ -50,7 +58,7 @@ documenting in uppercase implies something of this distinction.
   * `CTRL+L`: Select line under cursor, repetition selects more lines.
 
 #### Indenting
-  * `TAB` or `ALT+]`: Indent current line or selected text. _[`TAB` currently broken]_
+  * `TAB` or `ALT+]`: Indent current line or selected text. _`TAB` currently broken for Neovim_
   * `SHIFT+TAB` or `ALT+[`: Unindent current line or selected text.
 
 #### Finding, replacing
@@ -64,9 +72,13 @@ documenting in uppercase implies something of this distinction.
 
 #### Other text manipulation tricks
   * `CTRL+LEFT/RIGHT`: Move cursor per word (works in selection as well).
-  * `CTRL+ALT+k`: Delete current line.
-  * `CTRL+ALT+d`: Duplicate current line.
+  * `CTRL+ALT+k`: Delete current line. _Currently broken in terminal Vim_
+  * `CTRL+ALT+d`: Duplicate current line. _Currently broken in terminal Vim_
   * `CTRL+UP/DOWN`: Move current line or selected text up/down.
+
+_Note that `CTRL`-based shortcuts are paired with uppercase letters in these docs because
+Vim does not recognise the difference between cases when using `CTRL` combinations and
+documenting in uppercase implies something of this distinction._
 
 ### Interoperability
 When adding a new binding of your own that needs Normal mode, you should use `<C-O>` before the targeted command, for example;
@@ -82,8 +94,7 @@ inoremap ... custom mapping ...
 call novim_mode#StartNoVimMode()
 ```
 
-Shortcuts are also grouped roughly under the headings described above, so you may be able to disable
-one of the following:
+Shortcuts are also grouped roughly under the headings described above, so you may be able to disable one of the following:
 ```vim
 let g:novim_mode_use_general_app_shortcuts = 1
 let g:novim_mode_use_pane_controls = 1

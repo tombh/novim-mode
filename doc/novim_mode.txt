@@ -58,21 +58,26 @@ list of open files along the top of the editor.
 ==============================================================================
 4. Keybindings                                       *novim-mode-keybindings*
 
-Many terminals default to intercepting `CTRL+S` to suspend output, if so you
-will need to disable this behaviour. Most terminals will also bind `CTRL+Q`
-to undo the suspend, useful, but you will also need to unmap that, or change
-the mapping in this plugin for quitting Vim.
+Vim in the terminal
 
-`CTRL`-based shortcuts are paired with uppercase letters here because Vim
-does not recognise the difference between cases when using `CTRL` combinations
-and documenting in uppercase implies something of this distinction.
+Both Vim and Neovim can be used both as GUI apps and in the terminal. However, original Vim in the terminal has problems with many key combinations - essentially most combinations that are not a plain `CTRL+KEY`. To get around this you can use the `vim-fixkey`[2] plugin. It does have some caveats, which you can read about in its docs, but basically it just makes recording macros a little bit more tricky because of the timing between `Esc` combinations. `vim-fixkey` also doesn't enable `ALT+non-alphanumeric` combinations, but `novim-mode` usually has alphanumeric siblings which you can still use. However, if you are not particularly tied to Vim, you can use Neovim in the terminal which has much better support for key combinations and will work without the  need for `vim-fixkey`. Note that the GUI versions of both Vim and Neovim also don't have these key combination problems.
+
+Most terminal emulators (ie. `xterm`, `rxvt`, `PuTTY`, etc) default to intercepting `CTRL+S` to suspend output (`CTRL+Q` unsuspends if you're wondering), if so you will need to disable this behaviour to use `novim-mode`'s shortcuts for saving and quitting. Most often you simply need to add the following to your `~/.bashrc`, `~/.zshrc` or similar: >
+
+stty -ixon
+stty stop undef
+<
+
+However some GUI terminals also have their own settings for suspension. For instance Konsole, which can be unset by going to `Settings -> Configure Profile -> Choose current profile -> Edit Profile -> Advanced Tab` and disabling `Enable flow control using Ctrl+S and Ctrl+Q`
+
+One further common problem is that `tmux` can change key combination behaviour, most notably for `SHIFT+ARROW` combinations, to overcome this add `set-window-option -g xterm-keys` to your `~/.tmux.conf` config.
 
 General editor shortcuts
   * `CTRL+N`: Open a new file.
   * `CTRL+O`: Open an existing file.
   * `CTRL+S`: Saves the current file.
   * `CTRL+G`: Goto line.
-  * `ALT+;`: Vim command prompt.
+  * `ALT+;` or `ALT+c`: Vim command prompt.
   * `ALT+o`: Replaces native `CTRL+O` to give one-off Normal Mode commands.
 
 Pane controls
@@ -92,7 +97,6 @@ Selecting, copy and paste
 
 Indenting
   * `TAB` or `ALT+]`: Indent current line or selected text.
-     _[`TAB` currently broken]_
   * `SHIFT+TAB` or `ALT+[`: Unindent current line or selected text.
 
 Finding, replacing
@@ -111,6 +115,10 @@ Other text manipulation tricks
   * `CTRL+ALT+k`: Duplicate current line.
   * `CTRL+UP/DOWN`: Move current line or selected text up/down.
 
+
+`CTRL`-based shortcuts are paired with uppercase letters here because Vim
+does not recognise the difference between cases when using `CTRL` combinations
+and documenting in uppercase implies something of this distinction.
 ==============================================================================
 5. Interoperability                             *novim-mode-interoperability*
 
@@ -164,4 +172,4 @@ following: >
 7. References                                         *novim-mode-references*
 
 [1] https://github.com/terryma/vim-multiple-cursors
-
+[2] https://github.com/drmikehenry/vim-fixkey

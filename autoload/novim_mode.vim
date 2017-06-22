@@ -92,7 +92,9 @@ function! g:SetNoVimModeShortcuts()
 
     " ALT+; for command prompt
     inoremap <M-;> <C-O>:
+    inoremap <M-c> <C-O>:
     nnoremap <M-;> :
+    nnoremap <M-c> :
 
     " <ALT+o> replaces native <C-O> for one-time normal mode commands.
     inoremap <M-o> <C-O>
@@ -164,7 +166,7 @@ function! g:SetNoVimModeShortcuts()
 
   " Indenting
   if g:novim_mode_use_indenting == 1
-    " TODO: TAB doesn't work in mswin selection mode, but SHIFT+TAB does??
+    " TODO: In Neovim TAB doesn't work in mswin selection mode, but SHIFT+TAB does??
     snoremap <Tab> <C-O>>gv
     inoremap <M-]> <C-T>
     snoremap <M-]> <C-O>>gv
@@ -185,9 +187,6 @@ function! g:SetNoVimModeShortcuts()
     inoremap <S-F3> <C-O>N
     " Find and replace
     inoremap <C-H> <C-O>:%s/[FIND]/[REPLACE]/g
-    " Clears highlighting.
-    " NB. Overriding ESC makes it harder to get into NORMAL mode.
-    inoremap <silent> <Esc> <C-O>:noh<CR>
   endif
 
   " Undo/redo
@@ -211,10 +210,12 @@ function! g:SetNoVimModeShortcuts()
   " text.
   if g:novim_mode_use_text_tricks == 1
     " CTRL+ALTt+k deletes the current line under the cursor
+    " TODO: Doesn't work in terminal vim, even with vim-fixkey
     inoremap <silent> <C-M-K> <C-O>"_dd
 
     " CTRL+ALT+d duplicates current line.
     " NB. Uses the named 'd' register.
+    " TODO: Doesn't work in terminal vim, even with vim-fixkey
     inoremap <silent> <C-M-D> <C-O>"dyy<C-O>"dp
 
     " CTRL+DOWN/UP moves the current/selected line(s) up and down
