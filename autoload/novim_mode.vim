@@ -92,7 +92,9 @@ function! g:SetNoVimModeShortcuts()
 
     " ALT+; for command prompt
     inoremap <M-;> <C-O>:
+    snoremap <M-;> <C-O>:
     inoremap <M-c> <C-O>:
+    snoremap <M-c> <C-O>:
     nnoremap <M-;> :
     nnoremap <M-c> :
 
@@ -123,12 +125,16 @@ function! g:SetNoVimModeShortcuts()
   " Move between splits, panes, windows, etc and close them
   if g:novim_mode_use_pane_controls == 1
     inoremap <silent> <M-Left>  <C-O><C-W><Left>
+    snoremap <silent> <M-Left>  <Esc><C-W><Left>
     nnoremap <silent> <M-Left>  <C-W><Left>
     inoremap <silent> <M-Down>  <C-O><C-W><Down>
+    snoremap <silent> <M-Down>  <Esc><C-W><Down>
     nnoremap <silent> <M-Down>  <C-W><Down>
     inoremap <silent> <M-Up>    <C-O><C-W><Up>
+    snoremap <silent> <M-Up>    <Esc><C-W><Up>
     nnoremap <silent> <M-Up>    <C-W><Up>
     inoremap <silent> <M-Right> <C-O><C-W><Right>
+    snoremap <silent> <M-Right> <Esc><C-W><Right>
     nnoremap <silent> <M-Right> <C-W><Right>
 
     " This allows unsaved buffers to be kept in the background.
@@ -148,6 +154,7 @@ function! g:SetNoVimModeShortcuts()
     " NB. All these use the named 'p' register.
     inoremap <C-V> <C-O>"pP
     snoremap <C-V> <C-O>"pP
+    cnoremap <C-V> <C-R>"p
     snoremap <C-C> <C-O>"pygv
     inoremap <C-C> <C-O>"pY
     snoremap <C-X> <C-O>"pxi
@@ -231,7 +238,7 @@ endfunction
 " more conventionally.
 function! s:SetWrappedTextNavigation()
   " Allow text to wrap in text files
-  au BufNewFile,BufRead *.txt,*.md,*.markdown setlocal linebreak spell
+  au BufNewFile,BufRead *.txt,*.md,*.markdown setlocal linebreak spell wrap
 
   " Make arrow keys move through wrapped lines
   " TODO:
