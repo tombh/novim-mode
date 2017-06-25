@@ -37,12 +37,14 @@ endfunction
 
 call s:init_settings(s:settings)
 
-" Plugin entry point
-if has('timers')
-  call g:novim_mode#StartNoVimMode()
-else
-  echo 'Novim-mode will not work this version of Vim (no `timer` support).'
+if has('timers') == 0
+  echo "Novim-mode: Your Vim version (Vim <7.5 or Neovim <0.1.5) doesn't "
+  echo "support `timer()`, which causes a bug where Insert Mode is "
+  echo "innapropriately set for some panes."
 endif
+
+" Plugin entry point
+call g:novim_mode#StartNoVimMode()
 
 let &cpo = s:save_cpo
 unlet s:save_cpo

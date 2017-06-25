@@ -44,10 +44,14 @@ function! s:InsertAndSelectionBehaviour()
   " Intelligently set/unset insertmode
   augroup start_insertmode
     autocmd!
-    " The timer here delays the call to check whether the current buffer
-    " is an editable one. Without the delay, the check is often too early
-    " to correctly get the value of `&buftype`, etc.
-    autocmd BufEnter * call timer_start(1, {->execute('call s:InsertMode()')})
+    if has('timers') == 1
+      " The timer here delays the call to check whether the current buffer
+      " is an editable one. Without the delay, the check is often too early
+      " to correctly get the value of `&buftype`, etc.
+      autocmd BufEnter * call timer_start(1, {->execute('call s:InsertMode()')})
+    else
+      autocmd BufEnter * call s:InsertMode()
+    endif
   augroup END
 
   " Mostly changes the way selection works.

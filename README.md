@@ -14,6 +14,8 @@ Use your favourite plugin manager, eg, for vim-plug;
 
 `Plug 'tombh/novim-mode'`
 
+Note that Vim before v7.5 and Neovim before v0.1.5 have a bug where Insert Mode is inappropriately set for some panes.
+
 ## Usage
 
 Most keybindings should work as you might expect from, say Atom or Sublime Text; `SHIFT+ARROW` to select and `CTRL+C/V` to copy/paste. But don't expect Vim to completely bend to your will, it is still useful to familiarise yourself with some of Vim's basic concepts. For instance you may on occasion find yourself stuck in a particular Vim mode, like when pasting text without 'Paste Mode' then inserted text can trigger random mappings. In such case `CTRL+Q` may not kill Vim and you'll need to find a way of getting to Normal Mode and typing `:q` then `<RETURN>`. Such is life with Vim, this plugin is highly unlikely to ever change that. (BTW conventional pasting is on by default, but to exit an errant 'Paste Mode' use `:set nopaste`.)
