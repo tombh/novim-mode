@@ -261,7 +261,7 @@ describe 'Pane control' do
 
   specify 'closing a pane' do
     # Open Netrw file manager in a sidebar
-    type '<M-;>:Vexplore<CR>'
+    type '<M-;>Vexplore<CR>'
     buffer_id = vim.command "echo bufnr('%')"
     expect(buffer_id).to eq '2'
 
