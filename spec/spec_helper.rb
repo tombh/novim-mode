@@ -20,17 +20,24 @@ Vimrunner::RSpec.configure do |config|
   end
 end
 
-TEST_FILE = 'test_file.txt'.freeze
+RSpec.configure do |config|
+  config.before :each do
+    # Default to setting the filetype to shell to enable
+    # code-like behaviour.
+    @ext = 'sh'
+  end
+end
 
-def write_file_content(string)
+def write_file_content(string, ext = 'sh')
+  @file = "file.#{ext}"
   string = normalize_string_indent(string)
-  File.open(TEST_FILE, 'w') { |f| f.write(string) }
-  vim.edit TEST_FILE
+  File.open(@file, 'w') { |f| f.write(string) }
+  vim.edit @file
 end
 
 def load_file_content
   vim.write
-  IO.read(TEST_FILE).strip
+  IO.read(@file).strip
 end
 
 def type(string)
@@ -41,4 +48,18 @@ def type(string)
       vim.feedkeys key
     end
   end
+end
+
+def initial(string)
+  @vim_options.each { |x| vim.command(x) } if @vim_options
+  write_file_content(string, @ext)
+end
+
+def final(string)
+  expected = normalize_string_indent(string)
+  expect(load_file_content).to eq expected
+end
+
+def use_extension(ext)
+  @ext = ext
 end

@@ -2,15 +2,6 @@
 # of testing Vim.
 require 'spec_helper'
 
-def initial(string)
-  @vim_options.each { |x| vim.command(x) } if @vim_options
-  write_file_content(string)
-end
-
-def final(string)
-  expect(load_file_content).to eq normalize_string_indent(string)
-end
-
 describe 'Basic editing' do
   specify 'writing simple text' do
     initial <<-EOF
@@ -46,6 +37,18 @@ describe 'Basic editing' do
 
     final <<-EOF
       copy me copy me
+    EOF
+  end
+
+  specify 'CTRL+ARROW jumps by word' do
+    initial <<-EOF
+      one two three four
+    EOF
+
+    type '<C-Right>X<C-Right>Y<C-Left>Z'
+
+    final <<-EOF
+      one Xtwo ZYthree four
     EOF
   end
 end
@@ -106,6 +109,66 @@ describe 'Selecting' do
       !of text
     EOF
   end
+
+  specify 'CTRL+D selects the word under the cursor' do
+    initial <<-EOF
+      a line of text
+    EOF
+
+    4.times { type '<Right>' }
+    type '<C-D>X'
+
+    final <<-EOF
+      a X of text
+    EOF
+  end
+end
+
+describe 'Home/End behaviour for long, non-wrapped code lines' do
+  before(:each) do
+    # We need a small screen so that lines go off the edge of it.
+    @vim_options = [
+      # A single buffer can't be resized, so create a split of the buffer
+      'vsplit',
+      'vertical resize 6'
+    ]
+  end
+
+  specify 'HOME/END move to start/end of line off-screen' do
+    initial <<-EOF
+      line line line line
+    EOF
+
+    type '<End>X<Home>Y'
+
+    final <<-EOF
+      Yline line line lineX
+    EOF
+  end
+
+  specify 'SHIFT+END selects line, even if off-screen' do
+    initial <<-EOF
+      line line line line!
+    EOF
+
+    type '<S-End><S-Left>x'
+
+    final <<-EOF
+      x!
+    EOF
+  end
+
+  specify 'SHIFT+HOME selects line, even if off-screen' do
+    initial <<-EOF
+      !line line line line
+    EOF
+
+    type '<End><S-Home><S-Right>x'
+
+    final <<-EOF
+      !x
+    EOF
+  end
 end
 
 describe 'Wrapped text' do
@@ -115,6 +178,7 @@ describe 'Wrapped text' do
       'vsplit',
       'vertical resize 6'
     ]
+    use_extension 'txt'
   end
 
   specify 'move up/down one wrapped line' do

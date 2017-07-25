@@ -109,18 +109,11 @@ function! g:SetNoVimModeShortcuts()
 
   " General fixes to editor behaviour
   if g:novim_mode_use_editor_fixes == 1
-    " All thee `g`s here make these also work for wrapped lines.
-
     " Fix HOME to go back to the first non-whitespace character of the line.
-    inoremap <silent> <Home> <C-O>g^
-    " Native End would work anyway but it needs the `g` for wrapped lines
-    inoremap <silent> <End> <C-O>g$
-
-    " For selection behaviour
-    inoremap <silent> <S-Home> <S-Left><C-G><C-O>g^
-    snoremap <silent> <S-Home> <C-O>g^
-    inoremap <silent> <S-End> <S-Right><C-G><C-O>g$
-    snoremap <silent> <S-End> <C-O>g$
+    inoremap <silent> <Home> <C-O>^
+    " The same but for selection behaviour
+    inoremap <silent> <S-Home> <S-Left><C-G><C-O>^
+    snoremap <silent> <S-Home> <C-O>^
 
     " Tweaks PageUp behaviour to get cursor to first line on top page
     inoremap <silent> <PageUp> <C-O>:call novim_mode#PageUp()<CR>
@@ -155,14 +148,14 @@ function! g:SetNoVimModeShortcuts()
     " One of those curious features of Vim: without `onemore` when pasting
     " at the end of a line, pasted text gets put *before* the cursor.
     set virtualedit=onemore
-    " NB. All these use the named 'p' register.
-    inoremap <C-V> <C-O>"pP
-    snoremap <C-V> <C-O>"pP
-    cnoremap <C-V> <C-R>"p
-    snoremap <C-C> <C-O>"pygv
-    inoremap <C-C> <C-O>"pY
-    snoremap <C-X> <C-O>"pxi
-    inoremap <C-X> <C-O>"pdd
+    " NB. All these use the system clipboard.
+    inoremap <C-V> <C-O>"+P
+    snoremap <C-V> <C-O>"+P
+    cnoremap <C-V> <C-R>"+
+    snoremap <C-C> <C-O>"+ygv
+    inoremap <C-C> <C-O>"+Y
+    snoremap <C-X> <C-O>"+xi
+    inoremap <C-X> <C-O>"+dd
     " Select word under cursor
     inoremap <C-D> <C-O>viw<C-G>
     " Select current line
@@ -239,26 +232,57 @@ endfunction
 
 " By default Vim treats wrapped text as a single line even though it may
 " appear as many lines on screen. So here we try to make wrapped text behave
-" more conventionally.
+" more conventionally. Please add any new types you might come across.
 function! s:SetWrappedTextNavigation()
+  autocmd BufNewFile,BufRead *.{
+    \md,
+    \mdown,
+    \markdown,
+    \txt,
+    \textile,
+    \rdoc,
+    \org,
+    \creole,
+    \mediawiki
+  \} setlocal filetype=txt
+  autocmd FileType \
+    \rst,
+    \asciidoc,
+    \pod,
+    \txt
+    \ call s:WrappedTextBehaviour()
+endfunction
+
+function! s:WrappedTextBehaviour()
   " Allow text to wrap in text files
-  au BufNewFile,BufRead *.txt,*.md,*.markdown setlocal linebreak spell wrap
+  setlocal linebreak wrap
 
   " Make arrow keys move through wrapped lines
   " TODO:
-  "   * Scroll window 1 wrapped soft line at a time rather than entire block of wrapped
-  "     lines.
-  au BufNewFile,BufRead *.txt,*.md,*.markdown inoremap <buffer> <Up> <C-O>gk
-  au BufNewFile,BufRead *.txt,*.md,*.markdown inoremap <buffer> <Down> <C-O>gj
+  "   * Scroll window 1 wrapped soft line at a time rather than entire block
+  "     of wrapped lines -- I'm as good as certain this will need a patch to
+  "     (n)vim's internals.
+  inoremap <buffer> <Up> <C-O>gk
+  inoremap <buffer> <Down> <C-O>gj
   " For selection behaviour
-  au BufNewFile,BufRead *.txt,*.md,*.markdown snoremap <buffer> <S-Up> <C-O>gk
-  au BufNewFile,BufRead *.txt,*.md,*.markdown snoremap <buffer> <S-Down> <C-O>gj
+  snoremap <buffer> <S-Up> <C-O>gk
+  snoremap <buffer> <S-Down> <C-O>gj
+  " HOME/END for *visible* lines, not literal lines
+  inoremap <buffer> <silent> <Home> <C-O>g^
+  inoremap <buffer> <silent> <End> <C-O>g$
+  " For selection behaviour
+  inoremap <buffer> <silent> <S-Home> <S-Left><C-G><C-O>g^
+  snoremap <buffer> <silent> <S-Home> <C-O>g^
+  inoremap <buffer> <silent> <S-End> <S-Right><C-G><C-O>g$
+  snoremap <buffer> <silent> <S-End> <C-O>g$
 endfunction
 
 " Try to intuitively and intelligently close things like buffers, splits,
 " panes, quicklist, etc, basically anything that looks like a pane.
 function! novim_mode#ClosePane()
   if s:IsEditableBuffer() == 1
+    " TODO: These aren't actually formally associated with a buffer, although
+    "       conceptually they often are (eg; linting errors, file search).
     " Close any location lists on screen.
     exe "lclose"
     " Close any quickfix lists on screen.
