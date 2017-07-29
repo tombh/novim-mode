@@ -149,9 +149,12 @@ function! g:SetNoVimModeShortcuts()
     " at the end of a line, pasted text gets put *before* the cursor.
     set virtualedit=onemore
     " NB. All these use the system clipboard.
-    inoremap <C-V> <C-O>"+P
-    snoremap <C-V> <C-O>"+P
-    cnoremap <C-V> <C-R>"+
+    inoremap <C-V> <C-O>:call novim_mode#Paste()<CR>
+    " The odd <Space><Backspace> here is because one-off Normal Mode commands
+    " don't seem to work as expected when some text is selected. Also just
+    " using <Backspace> on its own seems to cause weird behaviour too.
+    snoremap <C-V> <Space><Backspace><C-O>:call novim_mode#Paste()<CR>
+    cnoremap <C-V> <C-R>"
     snoremap <C-C> <C-O>"+ygv
     inoremap <C-C> <C-O>"+Y
     snoremap <C-X> <C-O>"+xi
@@ -324,6 +327,13 @@ function! novim_mode#PageUp()
     " Goto first line
     execute "normal! gg"
   endif
+endfunction
+
+function! novim_mode#Paste()
+  set paste
+  execute 'normal! "+P'
+  set nopaste
+  call feedkeys("\<Right>")
 endfunction
 
 function! g:novim_mode#StartNoVimMode()
