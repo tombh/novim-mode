@@ -115,7 +115,8 @@ let g:novim_mode_use_better_wrap_navigation = 1
 Lastly you can unmap a mapping using commands such as `nunmap`, `iunmap`, `sunmap`, etc.
 
 ### Known issues
-  * There seems to be a bug where only `SHIFT+TAB` and not `TAB` works for indenting during selection mode.
+  * Because a lot of the keybindings trigger brief switches to NORMAL mode in the background, then be careful of plugins that cause a delay between switching modes. I know that `vim-airline` in particular has this problem.
+  * In Neovim there seems to be a bug where only `SHIFT+TAB` and not `TAB` works for indenting during selection mode.
   * Mapping `<CTRL+M>` internally means mapping `<RETURN>`. This is a throwback to Vim's days as a pure terminal application.
   * `CTRL+BACKSPACE` internally represents `<CTRL+H>`, which can be annoying. Again this is a throwback to Vim's days as a pure terminal application.
 
