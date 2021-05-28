@@ -76,6 +76,7 @@ General editor shortcuts
   * `CTRL+N`: Open a new file.
   * `CTRL+O`: Open an existing file.
   * `CTRL+S`: Saves the current file.
+  * `CTRL+Q`: Quit Vim.
   * `CTRL+G`: Goto line.
   * `ALT+;` or `ALT+c`: Vim command prompt.
   * `ALT+o`: Replaces native `CTRL+O` to give one-off Normal Mode commands.

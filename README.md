@@ -42,6 +42,7 @@ One further common problem is that `tmux` can change key combination behaviour, 
   * `CTRL+N`: Open a new file.
   * `CTRL+O`: Open an existing file.
   * `CTRL+S`: Saves the current file.
+  * `CTRL+Q`: Quit Vim.
   * `CTRL+G`: Goto line.
   * `ALT+;` or `ALT+c`: Vim's command prompt.
   * `ALT+o`: Replaces native `CTRL+O` to give one-off Normal Mode commands.
@@ -119,4 +120,3 @@ Lastly you can unmap a mapping using commands such as `nunmap`, `iunmap`, `sunma
   * In Neovim there seems to be a bug where only `SHIFT+TAB` and not `TAB` works for indenting during selection mode.
   * Mapping `<CTRL+M>` internally means mapping `<RETURN>`. This is a throwback to Vim's days as a pure terminal application.
   * `CTRL+BACKSPACE` internally represents `<CTRL+H>`, which can be annoying. Again this is a throwback to Vim's days as a pure terminal application.
-
