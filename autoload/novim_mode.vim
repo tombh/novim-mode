@@ -291,11 +291,17 @@ function! novim_mode#ClosePane()
     " Close any quickfix lists on screen.
     exe "cclose"
 
+    let l:check = execute(":ls")
     if s:CountListedBuffers() > 1
       " By default if the buffer is the only one on screen, closing it closes the
       " tab/window. So this little trick does a switch to the next buffer,
       " then closes the previous buffer.
       exe "bp\|bd #"
+    elseif l:check =~ "%a +"
+      let l:confirmed = confirm('There are unsaved changes. Close anyway?', "&Yes\n&No", 2)
+      if l:confirmed == 1
+        quit!
+      endif
     else
       quit
     endif
@@ -304,12 +310,15 @@ function! novim_mode#ClosePane()
   endif
 endfunction
 
-" TODO: Mention any unsaved buffers
 function! novim_mode#ExitVim()
-  let l:confirmed = confirm('Do you really want to quit Vim?', "&Yes\n&No", 2)
-  if l:confirmed == 1
-    quitall!
-  endif
+  let l:check = execute(":ls")
+  if l:check =~ "+"
+    let l:confirmed = confirm('There are unsaved changes. Quit anyway?', "&Yes\n&No", 2)
+    if l:confirmed == 1
+      quitall!
+    endif
+  else
+    quitall
 endfunction
 
 function! novim_mode#GotoLine()
