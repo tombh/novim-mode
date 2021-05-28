@@ -320,6 +320,7 @@ function! novim_mode#ExitVim()
     endif
   else
     quitall
+  endif
 endfunction
 
 function! novim_mode#GotoLine()
