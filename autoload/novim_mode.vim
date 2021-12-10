@@ -242,9 +242,8 @@ function! s:SetWrappedTextNavigation()
     \org,
     \creole,
     \mediawiki
-  \} setlocal filetype=markdown
+  \} call s:WrappedTextBehaviour()
   autocmd FileType \
-    \markdown,
     \rst,
     \asciidoc,
     \pod,
