@@ -85,9 +85,6 @@ function! g:SetNoVimModeShortcuts()
 
     " CTRL+n for new file
     inoremap <C-N> <C-O>:edit<Space>
-    " CTRL+o to open file
-    " TODO: hook into netrw or NERDTree
-    inoremap <C-O> <C-O>:edit<Space>
     " CTRL+s saves
     inoremap <silent> <C-S> <C-O>:update<CR>
 

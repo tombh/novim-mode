@@ -40,7 +40,7 @@ One further common problem is that `tmux` can change key combination behaviour, 
 
 #### General editor shortcuts
   * `CTRL+N`: Open a new file.
-  * `CTRL+O`: Open an existing file.
+  * ~~`CTRL+O`: Open an existing file.~~ Causes too many conflicts, use (`ALT+;`, type `edit`) or a file manager instead
   * `CTRL+S`: Saves the current file.
   * `CTRL+Q`: Quit Vim.
   * `CTRL+G`: Goto line.
