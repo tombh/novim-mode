@@ -153,9 +153,7 @@ function! g:SetNoVimModeShortcuts()
     snoremap <C-V> <Space><Backspace><C-O>:call novim_mode#Paste()<CR>
     cnoremap <C-V> <C-R>"
     snoremap <C-C> <C-O>"+ygv
-    inoremap <C-C> <C-O>"+Y
     snoremap <C-X> <C-O>"+xi
-    inoremap <C-X> <C-O>"+dd
     " Select word under cursor
     inoremap <C-D> <C-O>viw<C-G>
     " Select current line
