@@ -260,12 +260,10 @@ describe 'Pane control' do
   end
 
   specify 'closing a pane' do
-    # Open Netrw file manager in a sidebar
-    type '<M-;>Vexplore<CR>'
+    type '<M-;>vsplit README.md<CR>'
     buffer_id = vim.command "echo bufnr('%')"
     expect(buffer_id).to eq '2'
 
-    # Close Netrw pane
     type '<C-w>'
     buffer_id = vim.command "echo bufnr('%')"
     expect(buffer_id).to eq '1'

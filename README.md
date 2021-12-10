@@ -1,4 +1,4 @@
-#  No Vim Keybindings Mode [![Build Status](https://travis-ci.org/tombh/novim-mode.svg?branch=master)](https://travis-ci.org/tombh/novim-mode)
+#  No Vim Keybindings Mode
 
 Some, indeed many, may say this is counter-productive or even sacrilegious. But Vim is a lot more than just a keybinding paradigm; firstly it has one of the richest plugin ecosystems of any editor, but also it is a -if not *the* most- ubiquitous text editor that's been battle tested for over 25 years. There are more reasons to use it than merely its famous shortcut vocabulary.
 
@@ -13,8 +13,6 @@ The name `novim-mode` is a nod to the prevalence of 'vim-mode' plugins and exten
 Use your favourite plugin manager, eg, for vim-plug;
 
 `Plug 'tombh/novim-mode'`
-
-Note that Vim before v7.5 and Neovim before v0.1.5 have a bug where Insert Mode is inappropriately set for some panes.
 
 ## Usage
 

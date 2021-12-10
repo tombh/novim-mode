@@ -1,0 +1,18 @@
+name: Run tests in headless Vim
+on: [push]
+jobs:
+  Specs:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install Vim GTK
+        run: |
+          sudo apt-get install vim-gtk -y
+          vim --version
+      - uses: actions/checkout@v2
+      - uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+      - name: Run specs
+        uses: GabrielBB/xvfb-action@v1
+        with:
+          run: bundle exec rspec
