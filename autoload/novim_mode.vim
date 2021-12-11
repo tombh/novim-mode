@@ -3,6 +3,7 @@
 function! s:IsEditableBuffer()
   if &buftype ==# 'terminal'
     return 0
+  endif
   if &buftype ==# 'nofile'
      \|| !&modifiable
      \|| &readonly
