@@ -2,9 +2,13 @@
 " is always relevant. This is where we try to get an answer.
 function! s:IsEditableBuffer()
   if &buftype ==# 'nofile'
+    return 0
+  if &buftype ==# 'nofile'
      \|| !&modifiable
      \|| &readonly
     return 0
+  else
+    return 1
   endif
 endfunction
 
