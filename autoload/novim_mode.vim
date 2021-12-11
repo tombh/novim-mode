@@ -5,11 +5,6 @@ function! s:IsEditableBuffer()
      \|| !&modifiable
      \|| &readonly
     return 0
-  else
-    return 1
-  endif
-  if &buftype ==# 'terminal'
-    return 0
   endif
 endfunction
 
