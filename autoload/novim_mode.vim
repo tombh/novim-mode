@@ -1,7 +1,7 @@
 " A fundamental question for this plugin is whether insertmode
 " is always relevant. This is where we try to get an answer.
 function! s:IsEditableBuffer()
-  if &buftype ==# 'nofile'
+  if &buftype ==# 'terminal'
     return 0
   if &buftype ==# 'nofile'
      \|| !&modifiable
