@@ -9,6 +9,7 @@ set cpo&vim
 
 let s:settings = {
   \ 'use_general_app_shortcuts': 1,
+  \ 'use_tab_shortcuts': 1,
   \ 'use_editor_fixes': 1,
   \ 'use_pane_controls': 1,
   \ 'use_copypasting': 1,
@@ -40,7 +41,7 @@ call s:init_settings(s:settings)
 if has('timers') == 0
   echo "Novim-mode: Your Vim version (Vim <7.5 or Neovim <0.1.5) doesn't "
   echo "support `timer()`, which causes a bug where Insert Mode is "
-  echo "innapropriately set for some panes."
+  echo "inappropriately set for some panes."
 endif
 
 " Plugin entry point

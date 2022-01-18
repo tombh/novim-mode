@@ -118,6 +118,19 @@ function! g:SetNoVimModeShortcuts()
     inoremap <silent> <PageUp> <C-O>:call novim_mode#PageUp()<CR>
   endif
 
+  " Open and cycle between tabs
+  if g:novim_mode_use_tab_shortcuts == 1
+    " Open a new tab
+    nnoremap <silent> <C-T> :tabnew<CR>
+    inoremap <silent> <C-T> <C-O>:tabnew<CR>
+    snoremap <silent> <C-T> <C-O>:tabnew<CR>
+    " Cycle through tabs
+    " I would prefer <C-Tab>, but can't use it due to technical limitations.
+    nnoremap <silent> <C-S-T> :tabnext<CR>
+    inoremap <silent> <C-S-T> <C-O>:tabnext<CR>
+    snoremap <silent> <C-S-T> <C-O>:tabnext<CR>
+  end
+
   " Move between splits, panes, windows, etc and close them
   if g:novim_mode_use_pane_controls == 1
     inoremap <silent> <M-Left>  <C-O><C-W><Left>

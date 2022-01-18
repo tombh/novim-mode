@@ -45,6 +45,10 @@ One further common problem is that `tmux` can change key combination behaviour, 
   * `ALT+;` or `ALT+c`: Vim's command prompt.
   * `ALT+o`: Replaces native `CTRL+O` to give one-off Normal Mode commands.
 
+#### Tab navigation
+  * `CTRL+T`: Open a new tab.
+  * `CTRL+SHIFT+T`: Cycle through open tabs.
+
 #### Pane controls
   * `ALT+ARROW`: Change pane/buffer focus.
   * `CTRL+W`: Closes current pane-like thing. Also closes associated quickfix and location panes.
@@ -98,6 +102,7 @@ call novim_mode#StartNoVimMode()
 Shortcuts are also grouped roughly under the headings described above, so you may be able to disable one of the following:
 ```vim
 let g:novim_mode_use_general_app_shortcuts = 1
+let g:novim_mode_use_tab_shortcuts = 1
 let g:novim_mode_use_pane_controls = 1
 let g:novim_mode_use_copypasting = 1
 let g:novim_mode_use_indenting = 1
