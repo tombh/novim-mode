@@ -84,6 +84,7 @@ function! g:SetNoVimModeShortcuts()
     inoremap <silent> <C-Q> <C-O>:call novim_mode#ExitVim()<CR>
     snoremap <silent> <C-Q> <C-O>:call novim_mode#ExitVim()<CR>
     nnoremap <silent> <C-Q> :call novim_mode#ExitVim()<CR>
+    cnoremap <silent> <C-Q> <C-C><C-O>:call novim_mode#ExitVim()<CR>
 
     " CTRL+n for new file
     inoremap <C-N> <C-O>:edit<Space>
