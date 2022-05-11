@@ -111,6 +111,31 @@ describe 'Selecting' do
     EOF
   end
 
+  specify 'ALT+] indents' do
+    initial <<-EOF
+      a line of text
+    EOF
+
+    type '<S-End>'
+    type '<M-]>'
+    type '<M-]>'
+
+    final_with_indents "\t\ta line of text\n"
+  end
+
+  specify 'Shift-Tab or ALT+[ indents' do
+    initial <<-EOF
+      a line of text
+    EOF
+
+    type '<S-End>'
+    type '<M-]>'
+    type '<M-]>'
+    type '<S-Tab>'
+
+    final_with_indents "\ta line of text\n"
+  end
+
   specify 'CTRL+D selects the word under the cursor' do
     initial <<-EOF
       a line of text

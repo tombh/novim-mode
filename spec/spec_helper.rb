@@ -40,6 +40,11 @@ def load_file_content
   IO.read(@file).strip
 end
 
+def load_file_content_unstripped
+  vim.write
+  IO.read(@file)
+end
+
 def type(string)
   string.scan(/<.*?>|./).each do |key|
     if key =~ /<.*>/
@@ -58,6 +63,11 @@ end
 def final(string)
   expected = normalize_string_indent(string)
   expect(load_file_content).to eq expected
+end
+
+def final_with_indents(string)
+  expected = string
+  expect(load_file_content_unstripped).to eq expected
 end
 
 def use_extension(ext)

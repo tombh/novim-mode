@@ -175,13 +175,13 @@ function! g:SetNoVimModeShortcuts()
   " Indenting
   if g:novim_mode_use_indenting == 1
     " TODO: In Neovim TAB doesn't work in mswin selection mode, but SHIFT+TAB does??
-    snoremap <Tab> <C-O>>gv
+    snoremap <Tab> <C-O>>gv<C-G>
     inoremap <M-]> <C-T>
-    snoremap <M-]> <C-O>>gv
+    snoremap <M-]> <C-O>>gv<C-G>
     " Unindenting
-    snoremap <S-Tab> <C-O><gv
+    snoremap <S-Tab> <C-O><gv<C-G>
     inoremap <M-[> <C-D>
-    snoremap <M-[> <C-O><gv
+    snoremap <M-[> <C-O><gv<C-G>
   endif
 
   if g:novim_mode_use_finding == 1
@@ -205,13 +205,16 @@ function! g:SetNoVimModeShortcuts()
     " the last *text* activity.
     inoremap <silent> <C-Z> <C-O>u
     snoremap <silent> <C-Z> <Esc><C-O>u
+    vnoremap <silent> <C-Z> <Esc><C-O>u
     " Map CTRL+u as well for now just because by default it deletes the line above
     " the cursor.
     inoremap <silent> <C-U> <C-O>u
     snoremap <silent> <C-U> <Esc><C-O>u
+    vnoremap <silent> <C-U> <Esc><C-O>u
     " Redo
     inoremap <silent> <C-Y> <C-O><C-R>
     snoremap <silent> <C-Y> <Esc><C-O><C-R>
+    vnoremap <silent> <C-Y> <Esc><C-O><C-R>
   endif
 
   " Useful, but not necessarily core or conventional, shortcuts for manipulating
