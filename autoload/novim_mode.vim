@@ -54,18 +54,15 @@ function! s:InsertAndSelectionBehaviour()
     else
       autocmd BufEnter * call s:InsertMode()
     endif
-  augroup END
 
-  " Mostly changes the way selection works.
-  " See: http://vimdoc.sourceforge.net/htmldoc/gui.html#:behave
-  " An extract from the docs about the difference between `behave mswin`
-  " and `behave xterm`:
-  "               mswin              xterm
-  "  'selectmode' 'mouse,key'        ''
-  "  'mousemodel' 'popup'            'extend'
-  "  'keymodel'   'startsel,stopsel' ''
-  "  'selection'  'exclusive'        'inclusive'
-  behave mswin
+    " See `novim_mode#EnterSelectionMode`
+    " `xterm` behviour is standard Vim behaviour in terms of selecting, which although
+    " is contrary to what we want in this plugin, it's still what most plugins expect.
+    " So far I know `xterm` selection behaviour is critical for autocompletion plugins
+    " that do things like paste a snippet with placeholders that get selected and hence
+    " replaced when you start typing.
+    autocmd InsertEnter * behave xterm
+  augroup END
 
   " Make 'v' commands default to Visual mode.
   " Not sure how useful this is because the mappings that use 'v'-based
@@ -112,7 +109,6 @@ function! g:SetNoVimModeShortcuts()
     " Fix HOME to go back to the first non-whitespace character of the line.
     inoremap <silent> <Home> <C-O>^
     " The same but for selection behaviour
-    inoremap <silent> <S-Home> <S-Left><C-G><C-O>^
     snoremap <silent> <S-Home> <C-O>^
 
     " Tweaks PageUp behaviour to get cursor to first line on top page
@@ -158,14 +154,21 @@ function! g:SetNoVimModeShortcuts()
     snoremap <C-C> <C-O>"+ygv
     snoremap <C-X> <C-O>"+xi
     " Select word under cursor
-    inoremap <C-D> <C-O>viw<C-G>
+    inoremap <silent> <C-D> <C-O>:call novim_mode#EnterSelectionMode('word')<CR>
     " Select current line
-    inoremap <C-L> <C-O>V<C-G>
+    inoremap <silent> <C-L> <C-O>:call novim_mode#EnterSelectionMode('line')<CR>
     " Append next line to selection
     snoremap <C-L> <C-O>gj
 
+    inoremap <silent> <S-Left> <C-O>:call novim_mode#EnterSelectionMode('left')<CR>
+    inoremap <silent> <S-Right> <C-O>:call novim_mode#EnterSelectionMode('right')<CR>
+    inoremap <silent> <S-Up> <C-O>:call novim_mode#EnterSelectionMode('up')<CR>
+    inoremap <silent> <S-Down> <C-O>:call novim_mode#EnterSelectionMode('down')<CR>
+    inoremap <silent> <S-Home> <C-O>:call novim_mode#EnterSelectionMode('home')<CR>
+    inoremap <silent> <S-End> <C-O>:call novim_mode#EnterSelectionMode('end')<CR>
+
     " CTRL-A for selecting all text
-    inoremap <C-A> <C-O>gg<C-O>gH<C-O>G
+    inoremap <silent> <C-A> <C-O>:call novim_mode#EnterSelectionMode('all')<CR>
     snoremap <C-A> <C-O><C-C>gggH<C-O>G
   endif
 
@@ -263,19 +266,26 @@ function! s:WrappedTextBehaviour()
   "   * Scroll window 1 wrapped soft line at a time rather than entire block
   "     of wrapped lines -- I'm as good as certain this will need a patch to
   "     (n)vim's internals.
-  inoremap <buffer> <Up> <C-O>gk
+
+  " Up/Down for *visible* lines, not literal lines
+  inoremap <buffer> <Up>   <C-O>gk
   inoremap <buffer> <Down> <C-O>gj
+  snoremap <buffer> <Up>   <C-O>gk<Esc>
+  snoremap <buffer> <Down> <C-O>gj<Esc>
   " For selection behaviour
-  snoremap <buffer> <S-Up> <C-O>gk
-  snoremap <buffer> <S-Down> <C-O>gj
+  inoremap <buffer> <silent> <S-Up>   <C-O>:call novim_mode#EnterSelectionMode('up-wrapped-text')<CR>
+  snoremap <buffer>          <S-Up>   <C-O>gk
+  inoremap <buffer> <silent> <S-Down> <C-O>:call novim_mode#EnterSelectionMode('down-wrapped-text')<CR>
+  snoremap <buffer>          <S-Down> <C-O>gj
+
   " HOME/END for *visible* lines, not literal lines
   inoremap <buffer> <silent> <Home> <C-O>g^
-  inoremap <buffer> <silent> <End> <C-O>g$
+  inoremap <buffer> <silent> <End>  <C-O>g$
   " For selection behaviour
-  inoremap <buffer> <silent> <S-Home> <S-Left><C-G><C-O>g^
+  inoremap <buffer> <silent> <S-Home> <C-O>:call novim_mode#EnterSelectionMode('home-wrapped-text')<CR>
   snoremap <buffer> <silent> <S-Home> <C-O>g^
-  inoremap <buffer> <silent> <S-End> <S-Right><C-G><C-O>g$
-  snoremap <buffer> <silent> <S-End> <C-O>g$
+  inoremap <buffer> <silent> <S-End>  <C-O>:call novim_mode#EnterSelectionMode('end-wrapped-text')<CR>
+  snoremap <buffer> <silent> <S-End>  <C-O>g$
 endfunction
 
 " Try to intuitively and intelligently close things like buffers, splits,
@@ -353,5 +363,58 @@ function! g:novim_mode#StartNoVimMode()
 
   if g:novim_mode_use_shortcuts == 1
     call g:SetNoVimModeShortcuts()
+  endif
+endfunction
+
+function! novim_mode#EnterSelectionMode(type)
+  " Mostly changes the way selection works.
+  " See: http://vimdoc.sourceforge.net/htmldoc/gui.html#:behave
+  " An extract from the docs about the difference between `behave mswin`
+  " and `behave xterm`:
+  "               mswin              xterm
+  "  'selectmode' 'mouse,key'        ''
+  "  'mousemodel' 'popup'            'extend'
+  "  'keymodel'   'startsel,stopsel' ''
+  "  'selection'  'exclusive'        'inclusive'
+  behave mswin
+
+  if a:type == 'left'
+    execute "normal! \<S-Left>"
+  endif
+  if a:type == 'right'
+    execute "normal! \<S-Right>"
+  endif
+  if a:type == 'up'
+    execute "normal! \<S-Up>"
+  endif
+  if a:type == 'up-wrapped-text'
+    execute "normal! \<S-Left>\<C-G>\<C-O>gk\<S-Right>"
+  endif
+  if a:type == 'down'
+    execute "normal! \<S-Down>"
+  endif
+  if a:type == 'down-wrapped-text'
+    execute "normal! \<S-Right>\<C-G>\<C-O>gj\<S-Left>"
+  endif
+  if a:type == 'home'
+    execute "normal! \<S-Home>"
+  endif
+  if a:type == 'home-wrapped-text'
+    execute "normal! \<S-Left>\<C-G>\<C-O>g^"
+  endif
+  if a:type == 'end'
+    execute "normal! \<S-End>"
+  endif
+  if a:type == 'end-wrapped-text'
+    execute "normal! \<S-Right>\<C-G>\<C-O>g$"
+  endif
+  if a:type == 'word'
+    execute "normal! viw\<C-G>"
+  endif
+  if a:type == 'line'
+    execute "normal! V\<C-G>"
+  endif
+  if a:type == 'all'
+    execute "normal! ggVG\<C-G>"
   endif
 endfunction

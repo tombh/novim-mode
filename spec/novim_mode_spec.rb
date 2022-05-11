@@ -56,7 +56,8 @@ end
 describe 'Selecting' do
   specify 'select all and replace' do
     initial <<-EOF
-      select me
+      select me more, just to make sure
+			even a hard line
     EOF
 
     type '<C-a>gone'
@@ -203,7 +204,7 @@ describe 'Wrapped text' do
     type '!'
 
     final <<-EOF
-      line1 !line3 line4
+      line1 !line4
     EOF
   end
 
@@ -216,7 +217,7 @@ describe 'Wrapped text' do
     type '!'
 
     final <<-EOF
-      line1 !line3 line4
+      !line3 line4
     EOF
   end
 
