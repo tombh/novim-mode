@@ -16,9 +16,15 @@ endfunction
 " to files that you want to edit.
 function! s:InsertMode()
   if s:IsEditableBuffer() == 1
-    exe "set insertmode"
+    exe "startinsert"
+    inoremap <Esc> <Nop>
+    inoremap <C-L> <Esc>
+    nnoremap <Esc> i
   else
-    exe "set noinsertmode"
+    exe "stopinsert"
+    inoremap <Esc> <Esc>
+    inoremap <C-L> <C-L>
+    nnoremap <Esc> <Esc>
   endif
 endfunction
 
