@@ -67,7 +67,7 @@ function! s:InsertAndSelectionBehaviour()
     " So far I know `xterm` selection behaviour is critical for autocompletion plugins
     " that do things like paste a snippet with placeholders that get selected and hence
     " replaced when you start typing.
-    autocmd InsertEnter * behave xterm
+    autocmd InsertEnter * call g:BehaveXterm()
   augroup END
 
   " Make 'v' commands default to Visual mode.
@@ -77,6 +77,29 @@ function! s:InsertAndSelectionBehaviour()
   " Mode. So might be better to give experienced users who are pressing
   " 'v' in normal mode the expected behaviour.
   set selectmode+=cmd
+endfunction
+
+" Mostly changes the way selection works.
+" See: http://vimdoc.sourceforge.net/htmldoc/gui.html#:behave
+" An extract from the docs about the difference between `behave mswin`
+" and `behave xterm`:
+"               mswin              xterm
+"  'selectmode' 'mouse,key'        ''
+"  'mousemodel' 'popup'            'extend'
+"  'keymodel'   'startsel,stopsel' ''
+"  'selection'  'exclusive'        'inclusive'
+function! g:BehaveMSWin()
+  set selection=exclusive
+  set mousemodel=popup
+  set selectmode=mouse,key
+  set keymodel=startsel,stopsel
+endfunction
+
+function! g:BehaveXterm()
+  set selection=inclusive
+  set mousemodel=extend
+  set selectmode=
+  set keymodel=
 endfunction
 
 " All shortcuts in one function so they can be more easily controlled.
@@ -376,16 +399,7 @@ function! g:novim_mode#StartNoVimMode()
 endfunction
 
 function! novim_mode#EnterSelectionMode(type)
-  " Mostly changes the way selection works.
-  " See: http://vimdoc.sourceforge.net/htmldoc/gui.html#:behave
-  " An extract from the docs about the difference between `behave mswin`
-  " and `behave xterm`:
-  "               mswin              xterm
-  "  'selectmode' 'mouse,key'        ''
-  "  'mousemodel' 'popup'            'extend'
-  "  'keymodel'   'startsel,stopsel' ''
-  "  'selection'  'exclusive'        'inclusive'
-  behave mswin
+  call g:BehaveMSWin()
 
   if a:type == 'left'
     execute "normal! \<S-Left>"
