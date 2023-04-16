@@ -212,6 +212,9 @@ function! g:SetNoVimModeShortcuts()
     inoremap <silent> <C-Z> <C-O>u
     snoremap <silent> <C-Z> <Esc><C-O>u
     vnoremap <silent> <C-Z> <Esc><C-O>u
+    " Just because you sometimes find yourself in Normal mode and would rather
+    " not background the terminal process
+    nnoremap <silent> <C-Z> u
     " Map CTRL+u as well for now just because by default it deletes the line above
     " the cursor.
     inoremap <silent> <C-U> <C-O>u
