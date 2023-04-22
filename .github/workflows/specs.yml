@@ -6,6 +6,7 @@ jobs:
     steps:
       - name: Install Vim GTK
         run: |
+          sudo apt-get update -y
           sudo apt-get install vim-gtk -y
           vim --version
       - uses: actions/checkout@v2
